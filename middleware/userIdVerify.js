@@ -5,7 +5,11 @@ module.exports = async (req, res, next) => {
   if (!userDataId) return res.status(401).json({ msg: "user data id unvalid" });
   try {
     const validId = await User.model.findOne({ _id: userDataId });
-    next();
+    if (validId) {
+      next();
+    } else {
+      return res.status(400).json({ msg: "user data id unvalid" });
+    }
   } catch (err) {
     return res.status(400).json({ msg: "user data id unvalid" });
   }

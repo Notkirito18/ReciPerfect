@@ -9,15 +9,7 @@ const jwt = require("jsonwebtoken");
 const createUser = asyncWrapper(async (req, res) => {
   // user creation
   const user = new User.model(req.body);
-  if (req.body.admin) {
-    user.userDataId = user._id;
-  } else {
-    if (!req.body.userDataId) {
-      return res
-        .status(400)
-        .json({ msg: "none admin users must have a userDataId" });
-    }
-  }
+
   // validation
   const error = userValidation(user);
   if (error) {
@@ -28,6 +20,13 @@ const createUser = asyncWrapper(async (req, res) => {
   const emailExist = await User.model.findOne({ email: req.body.email });
   if (emailExist) {
     return res.status(400).json({ msg: "email already exist" });
+  }
+  //checking if username already exist
+  const usernameExist = await User.model.findOne({
+    username: req.body.username,
+  });
+  if (usernameExist) {
+    return res.status(400).json({ msg: "username already exist" });
   }
 
   // password hashing
@@ -49,7 +48,6 @@ const createUser = asyncWrapper(async (req, res) => {
   res.status(201).json({
     email: savedUser.email,
     userId: savedUser._id,
-    userDataId: savedUser.userDataId,
   });
 });
 
@@ -85,11 +83,9 @@ const loginUser = asyncWrapper(async (req, res) => {
 
   // response
   res.status(200).json({
+    username: loggedInUser.username,
     email: loggedInUser.email,
     _id: loggedInUser._id,
-    admin: loggedInUser.admin,
-    userDataId: loggedInUser.userDataId,
-    username: loggedInUser.username,
   });
 });
 

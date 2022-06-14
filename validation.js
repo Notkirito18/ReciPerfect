@@ -13,7 +13,7 @@ const userValidation = (user) => {
         errors.forEach((err) => {
           if (err.code == "string.pattern.base") {
             err.message =
-              "password must be at least 8 characters, and must contain at least one lowercase character,at least one uppercase character and at least one number";
+              "password must be at least 8 characters, and a mix of lowercase, uppercase and numbers";
           }
         });
         return errors;
@@ -35,7 +35,7 @@ const userLoginValidation = (loginData) => {
         errors.forEach((err) => {
           if (err.code == "string.pattern.base") {
             err.message =
-              "password must be at least 8 characters, and must contain at least one lowercase character,at least one uppercase character and at least one number ";
+              "password must be at least 8 characters, and a mix of lowercase, uppercase and numbers";
           }
         });
         return errors;
@@ -51,7 +51,7 @@ const recipeValidation = (recipe) => {
     name: Joi.string().required(),
     unit: Joi.string().required(),
     amount: Joi.number().required(),
-  });
+  }).unknown();
 
   const recipeSchema = Joi.object({
     name: Joi.string().required(),

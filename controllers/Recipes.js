@@ -25,12 +25,12 @@ const createRecipe = asyncWrapper(async (req, res) => {
 
   // updating recipe object with userId
   const recipe = new Recipe.model(req.body);
-  recipe.userDataId = userId;
+  recipe.creatorId = userId;
 
   //validation
   const error = recipeValidation(recipe);
   if (error) {
-    return res.status(400).json({ msg: error.details[0].message });
+    return res.status(400).json({ msg: error });
   }
   //creating the recipe and responding
   const recipeCreated = await Recipe.model.create(recipe);
@@ -98,7 +98,7 @@ const deleteRecipe = asyncWrapper(async (req, res) => {
   const _id = req.params.id;
   const recipe = await Recipe.model.findOne({ _id });
   // recipe with _id doesn't exist or it exist but belongs to different user
-  if (!recipe || recipe.userDataId != userId)
+  if (!recipe || recipe.creatorId != userId)
     return res.status(400).json({ msg: "No data matches the id : " + _id });
 
   //deleting and responding

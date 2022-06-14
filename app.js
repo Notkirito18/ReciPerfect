@@ -41,7 +41,7 @@ app.use("/auth", authorize, auth);
 //*users crud routes
 app.use("/api/users", authorize, users);
 //*recipes crud routes
-app.use("/api/recipes", authorize, recipes);
+app.use("/api/recipes", authorize, userIdVerify, verifyToken, recipes);
 
 //* serving the frontend
 // app.use(express.static(path.join(__dirname, "public")));

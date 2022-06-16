@@ -62,7 +62,7 @@ const loginUser = asyncWrapper(async (req, res) => {
   //checking if email exist
   const loggedInUser = await User.model.findOne({ email: req.body.email });
   if (!loggedInUser) {
-    return res.status(403).json({ msg: "-Email- or password is wrong" });
+    return res.status(403).json({ msg: "Email or password is wrong" });
   }
   //cheking if password is correct
   const validPass = await bcrypt.compare(
@@ -70,7 +70,7 @@ const loginUser = asyncWrapper(async (req, res) => {
     loggedInUser.password
   );
   if (!validPass) {
-    return res.status(403).json({ msg: "Email or -password- is wrong" });
+    return res.status(403).json({ msg: "Email or password is wrong" });
   }
 
   // create and assign token

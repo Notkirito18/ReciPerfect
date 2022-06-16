@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 const recipes = require("./routes/recipes");
+const recipesRead = require("./routes/recipesRead");
 
 //*middlewares
 //require the header "key" to authorize the request
@@ -40,8 +41,10 @@ app.use(express.json());
 app.use("/auth", authorize, auth);
 //*users crud routes
 app.use("/api/users", authorize, users);
-//*recipes crud routes
-app.use("/api/recipes", authorize, userIdVerify, verifyToken, recipes);
+//*recipes write routes
+app.use("/api/recipes/write", authorize, userIdVerify, verifyToken, recipes);
+//*recipes read routes
+app.use("/api/recipe/read", authorize, recipesRead);
 
 //* serving the frontend
 // app.use(express.static(path.join(__dirname, "public")));

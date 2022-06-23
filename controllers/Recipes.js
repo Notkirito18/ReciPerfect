@@ -9,11 +9,11 @@ const getAllRecipes = asyncWrapper(async (req, res) => {
   // getting userId
   const userId = req.header("userDataId");
 
-  //response with only the recipes that have the userId
+  //response with only the recipes that have the userId or are public (share prop true)
   const recipes = await Recipe.model.find(req.query);
   res.status(200).json({
     recipes: recipes.filter((item) => {
-      return item.userDataId == userId;
+      return item.creatorId == userId || item.share == true;
     }),
   });
 });
@@ -33,8 +33,21 @@ const createRecipe = asyncWrapper(async (req, res) => {
     return res.status(400).json({ msg: error });
   }
   //creating the recipe and responding
-  const recipeCreated = await Recipe.model.create(recipe);
-  res.status(201).json({ recipe: recipeCreated });
+  if (req.body.imagesFiles.length > 0) {
+    const imagesPaths = req.body.imagesSrcs;
+    const formatedRecipe = new Recipe.model({
+      ...req.body,
+      imagesFiles: imagesPaths,
+    });
+    const recipeCreated = await formatedRecipe.save();
+
+    res.status(201).json({
+      recipe: { ...recipeCreated._doc },
+    });
+  } else {
+    const recipeCreated = Recipe.model.create(recipe);
+    res.status(201).json({ recipe: recipe });
+  }
 });
 
 //* getting singel item in database operation
@@ -46,7 +59,7 @@ const getRecipe = asyncWrapper(async (req, res) => {
   const _id = req.params.id;
   const recipe = await Recipe.model.findOne({ _id });
   // recipe with _id doesn't exist or it exist but belongs to different user
-  if (!recipe || recipe.userDataId != userId)
+  if (!recipe || recipe.creatorId != userId)
     return res.status(400).json({ msg: "No data matches the id : " + _id });
 
   // response
@@ -62,12 +75,12 @@ const updateRecipe = asyncWrapper(async (req, res) => {
   const _id = req.params.id;
   const recipe = await Recipe.model.findOne({ _id });
   // recipe with _id doesn't exist or it exist but belongs to different user
-  if (!recipe || recipe.userDataId != userDataId)
+  if (!recipe || recipe.creatorId != userDataId)
     return res.status(400).json({ msg: "No data matches the id : " + _id });
 
   //validating newRecipe data
   const newRecipe = new Recipe.model({ ...req.body, _id });
-  newRecipe.userDataId = userDataId;
+  newRecipe.creatorId = userDataId;
   const error = recipeValidation(newRecipe);
   if (error) {
     return res.status(400).json({ msg: error.details[0].message });
@@ -138,6 +151,7 @@ const deleteManyRecipes = asyncWrapper(async (req, res) => {
     res.status(500).json({ msg: err.message });
   }
 });
+
 module.exports = {
   getAllRecipes,
   createRecipe,

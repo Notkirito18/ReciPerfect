@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const VoucherSchema = new mongoose.Schema(
+const IngredientSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -16,6 +16,6 @@ const VoucherSchema = new mongoose.Schema(
 );
 
 module.exports = {
-  model: mongoose.model("Voucher", VoucherSchema),
-  schema: VoucherSchema,
+  model: mongoose.model("Voucher", IngredientSchema),
+  schema: IngredientSchema,
 };

@@ -57,8 +57,10 @@ const recipeValidation = (recipe) => {
     name: Joi.string().required(),
     description: Joi.string(),
     ingredients: Joi.array().items(ingredientSchema).required(),
-    instructions: Joi.string().required(),
-    public: Joi.boolean().required(),
+    instructions: Joi.array().items(Joi.string()).required(),
+    imagesFiles: Joi.array(),
+    imagesSrcs: Joi.array(),
+    share: Joi.boolean().required(),
     creatorId: Joi.objectId().required(),
     date: Joi.date().required(),
   }).unknown();

@@ -12,9 +12,15 @@ const RecipeSchema = new mongoose.Schema({
     type: [Ingredient.schema],
   },
   instructions: {
-    type: String,
+    type: [String],
   },
-  public: {
+  imagesFiles: {
+    type: [String],
+  },
+  imagesSrcs: {
+    type: [String],
+  },
+  share: {
     type: Boolean,
     default: false,
   },

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../helpers/multer");
 
 const {
   createRecipe,
@@ -21,7 +22,7 @@ router.route("/:id").patch(updateRecipe).delete(deleteRecipe);
 router.route("/deleteMany").post(deleteManyRecipes);
 
 //images storage
-router.route("/saveImage").post(storage, saveImages);
+router.route("/saveImage").post(upload.array("image"), saveImages);
 router.route("/saveImage/:id").delete(deleteImages);
 router.route("/deleteManyImages").post(deleteManyImages);
 

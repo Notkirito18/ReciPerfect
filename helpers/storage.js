@@ -1,22 +1,17 @@
-const multer = require('multer');
+const cloudinary = require("./cloudinary");
+const fs = require("fs");
 
-const diskStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'images');
-  },
-  filename: (req, file, cb) => {
-    const fileType = file.mimetype.split('/')[1];
-    const originalName = file.originalname.split('.')[0]
-    const fileName = originalName + '-' + Date.now() + '.' + fileType;
-    cb(null, fileName);
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedMimeTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-  allowedMimeTypes.includes(file.mimetype) ? cb(null, true) : cb(null, false);
+const storage = async (req, res, next) => {
+  const uploader = async (path) => await cloudinary.uploads(path, "Images");
+  const urls = [];
+  const files = req.files;
+  for (const file of files) {
+    const { path } = file;
+    const newPath = await uploader(path);
+    urls.push(newPath);
+    fs.unlinkSync(path);
+  }
+  next();
 };
-
-const storage = multer({ storage: diskStorage, fileFilter: fileFilter }).array('image')
 
 module.exports = storage;

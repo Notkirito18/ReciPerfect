@@ -1,23 +1,42 @@
 const Image = require("../models/submodels/Image");
 const Recipe = require("../models/Recipe");
 const asyncWrapper = require("../middleware/async");
+const cloudinary = require("../helpers/cloudinary");
+const fs = require("fs");
 
 // saving images on upload
 const saveImages = asyncWrapper(async (req, res) => {
-  let images = [];
-  for (let i = 0; i < req.files.length; i++) {
-    const name = req.files[i].filename;
-    const imagePath = process.env.URL + "images/" + name;
-    const image = new Image({
-      name,
-      imagePath,
-    });
-    const createdImage = await image.save();
-    images.push({ ...createdImage._doc });
+  console.log(req.files);
+
+  const uploader = async (path) => await cloudinary.uploads(path, "Images");
+  const urls = [];
+  const files = req.files;
+  for (const file of files) {
+    const { path } = file;
+    const newPath = await uploader(path);
+    urls.push(newPath);
+    fs.unlinkSync(path);
   }
+
   res.status(201).json({
-    images,
+    images: urls,
   });
+
+  // let images = [];
+  // for (let i = 0; i < req.files.length; i++) {
+  //   const name = req.files[i].filename;
+  //   const imagePath = process.env.URL + "images/" + name;
+  //   const image = new Image({
+  //     name,
+  //     imagePath,
+  //   });
+  //   const createdImage = await image.save();
+  //   images.push({ ...createdImage._doc });
+  // }
+  // console.log(images);
+  // res.status(201).json({
+  //   images,
+  // });
 });
 
 //* delete images of single deleted item from storage

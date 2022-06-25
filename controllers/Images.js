@@ -7,7 +7,10 @@ const fs = require("fs");
 
 // saving images on upload
 const saveImages = asyncWrapper(async (req, res) => {
-  const uploader = async (path) => await cloudinary.uploads(path, "Recipes");
+  const date = new Date();
+  const folderName = "rec-" + date.getTime().toString();
+  const uploader = async (path) =>
+    await cloudinary.uploads(path, "Recipes/" + folderName);
   const urls = [];
   const files = req.files;
   for (const file of files) {

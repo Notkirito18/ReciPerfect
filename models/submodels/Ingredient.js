@@ -16,6 +16,6 @@ const IngredientSchema = new mongoose.Schema(
 );
 
 module.exports = {
-  model: mongoose.model("Voucher", IngredientSchema),
+  model: mongoose.model("Ingredient", IngredientSchema),
   schema: IngredientSchema,
 };

@@ -47,12 +47,17 @@ const userLoginValidation = (loginData) => {
 
 //* recipe validation
 const recipeValidation = (recipe) => {
+  //*submodels schemas
   const ingredientSchema = Joi.object({
     name: Joi.string().required(),
     unit: Joi.string().required(),
     amount: Joi.number().required(),
   }).unknown();
-
+  const ratingSchema = Joi.object({
+    ratorId: Joi.string().required(),
+    ratingScore: Joi.number().required(),
+  }).unknown();
+  //*main recipe schema
   const recipeSchema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string(),
@@ -62,6 +67,8 @@ const recipeValidation = (recipe) => {
     imagesSrcs: Joi.array(),
     share: Joi.boolean().required(),
     creatorId: Joi.objectId().required(),
+    ratings: Joi.array().items(ratingSchema).default([]),
+    likes: Joi.array().items(Joi.string()).default([]),
     date: Joi.date().required(),
   }).unknown();
 

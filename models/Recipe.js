@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Ingredient = require("./submodels/Ingredient");
+const Rating = require("./submodels/Rating");
 
 const RecipeSchema = new mongoose.Schema({
   name: {
@@ -26,6 +27,12 @@ const RecipeSchema = new mongoose.Schema({
   },
   creatorId: {
     type: String,
+  },
+  ratings: {
+    type: [Rating.schema],
+  },
+  likes: {
+    type: [String],
   },
   date: {
     type: Date,

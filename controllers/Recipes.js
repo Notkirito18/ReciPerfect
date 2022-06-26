@@ -59,7 +59,7 @@ const getRecipe = asyncWrapper(async (req, res) => {
   const _id = req.params.id;
   const recipe = await Recipe.model.findOne({ _id });
   // recipe with _id doesn't exist or it exist but belongs to different user
-  if (!recipe || recipe.creatorId != userId)
+  if (!recipe || (recipe.creatorId != userId && !recipe.share))
     return res.status(400).json({ msg: "No data matches the id : " + _id });
 
   // response

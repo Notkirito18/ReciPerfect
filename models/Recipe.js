@@ -34,6 +34,18 @@ const RecipeSchema = new mongoose.Schema({
   likes: {
     type: [String],
   },
+  prepTime: {
+    type: Number,
+  },
+  cookTime: {
+    type: Number,
+  },
+  servingsYield: {
+    type: Number,
+  },
+  serving: {
+    type: Number,
+  },
   date: {
     type: Date,
     default: new Date(),

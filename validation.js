@@ -69,6 +69,10 @@ const recipeValidation = (recipe) => {
     creatorId: Joi.objectId().required(),
     ratings: Joi.array().items(ratingSchema).default([]),
     likes: Joi.array().items(Joi.string()).default([]),
+    prepTime: Joi.number().required(),
+    cookTime: Joi.number().required(),
+    servingsYield: Joi.number().required(),
+    serving: Joi.number().required(),
     date: Joi.date().required(),
   }).unknown();
 

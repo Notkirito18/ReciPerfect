@@ -80,7 +80,6 @@ const updateRecipe = asyncWrapper(async (req, res) => {
 
   //validating newRecipe data
   const newRecipe = new Recipe.model({ ...req.body, _id });
-  newRecipe.creatorId = userDataId;
   const error = recipeValidation(newRecipe);
   if (error) {
     return res.status(400).json({ msg: error.details[0].message });

@@ -75,10 +75,10 @@ const loginUser = asyncWrapper(async (req, res) => {
 
   // create and assign token
   const token = jwt.sign({ _id: loggedInUser._id }, process.env.TOKEN_KEY, {
-    expiresIn: 3600,
+    expiresIn: 86400,
   });
   res.header("authToken", token);
-  res.header("expires-in", 3600);
+  res.header("expires-in", 86400);
   res.header("Access-Control-Expose-Headers", ["authToken", "expires-in"]);
 
   // response

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Profile = require("./submodels/Profile");
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -12,6 +13,9 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  profile: {
+    type: Profile.schema,
   },
 });
 

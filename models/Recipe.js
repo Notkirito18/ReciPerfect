@@ -50,6 +50,9 @@ const RecipeSchema = new mongoose.Schema({
     type: Date,
     default: new Date(),
   },
+  tags: {
+    type: [String],
+  },
 });
 
 module.exports = {

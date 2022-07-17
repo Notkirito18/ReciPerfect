@@ -74,6 +74,7 @@ const recipeValidation = (recipe) => {
     servingsYield: Joi.number().required(),
     serving: Joi.number().required(),
     date: Joi.date().required(),
+    tags: Joi.array().items(Joi.string()).default([]),
   }).unknown();
 
   return recipeSchema.validate(recipe).error;

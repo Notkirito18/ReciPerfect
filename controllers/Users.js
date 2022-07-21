@@ -86,6 +86,7 @@ const loginUser = asyncWrapper(async (req, res) => {
     username: loggedInUser.username,
     email: loggedInUser.email,
     _id: loggedInUser._id,
+    profile: loggedInUser.profile,
   });
 });
 

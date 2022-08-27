@@ -48,6 +48,7 @@ const createUser = asyncWrapper(async (req, res) => {
   res.status(201).json({
     email: savedUser.email,
     userId: savedUser._id,
+    username: savedUser.username,
   });
 });
 

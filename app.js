@@ -47,10 +47,10 @@ app.use("/api/recipes/write", authorize, userIdVerify, verifyToken, recipes);
 app.use("/api/recipe/read", authorize, recipesRead);
 
 //* serving the frontend
-// app.use(express.static(path.join(__dirname, "public")));
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public/index.html"));
-// });
+app.use(express.static(path.join(__dirname, "public")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.html"));
+});
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);

@@ -54,7 +54,7 @@ app.get("*", (req, res) => {
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);
-const port = process.env.PORT || 5000;
+const port = process.env.URL;
 
 //starting the server
 const start = async () => {

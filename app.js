@@ -6,6 +6,7 @@ const connectDB = require("./db/connect");
 require("dotenv").config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const serverless = require("serverless-http");
 
 // routes import
 const users = require("./routes/users");
@@ -54,6 +55,8 @@ app.get("*", (req, res) => {
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);
+
+module.exports.handler = serverless(app);
 const port = process.env.URL;
 
 //starting the server
